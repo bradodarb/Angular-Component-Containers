@@ -1,8 +1,8 @@
-import { NgModule, ModuleWithProviders } from '@angular/core';
+import { NgModule, ModuleWithProviders, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ComponentInjectorService } from './services/component-injector.service';
 import { ContainerItemDirective } from './directives/container-item.directive';
-import { ComponentMap, ComponentMapItem } from './models/component-map';
+import { ComponentMap, ComponentMapItem } from './lib/component-map';
 
 export { ComponentMap };
 export { ComponentMapItem };
@@ -15,7 +15,8 @@ export { ComponentMapItem };
   exports: [
     ContainerItemDirective
   ],
-  providers: [ComponentInjectorService]
+  providers: [ComponentInjectorService],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class ComponentContainerModule {
   static defaultMap(map) {

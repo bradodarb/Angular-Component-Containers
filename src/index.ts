@@ -1,4 +1,4 @@
 export * from './component-container.module';
 export * from './directives/container-item.directive';
 export * from './services/component-injector.service';
-export * from './models/component-map';
+export * from './lib/component-map';

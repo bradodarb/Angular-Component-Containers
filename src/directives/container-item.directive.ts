@@ -1,15 +1,18 @@
 
-import { Component, Directive, Input, ViewContainerRef, OnChanges, ComponentRef } from '@angular/core';
+import { Component, Directive, Input, ViewContainerRef, OnChanges, ComponentRef, OnInit } from '@angular/core';
 import { ComponentInjectorService } from '../services/component-injector.service';
-import { ComponentMap } from '../models/component-map';
-
+import { ComponentMap } from '../lib/component-map';
+import { BaseResolver, Resolver } from '../lib/resolver-strategy';
 
 @Directive({ selector: '[container-item]' })
-export class ContainerItemDirective implements OnChanges {
+export class ContainerItemDirective implements OnChanges, OnInit {
+
 
   @Input() context: Component;
 
   @Input() map: ComponentMap = new ComponentMap();
+
+  @Input() resolver: Resolver
 
   private injector: ComponentInjectorService;
   private host: ViewContainerRef;
@@ -20,28 +23,22 @@ export class ContainerItemDirective implements OnChanges {
     this.host = host;
   }
 
+  ngOnInit() {
+    if (!this.resolver) {
+      this.resolver = new BaseResolver(this.map);
+    }
+  }
 
   private resolveContext() {
     this.destroyContext();
-    if (this.context) {
-      let component = null;
-      const targetType = Object.getPrototypeOf(this.context).constructor;
 
-      if (this.map) {
-        component = this.map.getComponent(targetType);
-      }
-
-      if (!component) {
-        if (ComponentInjectorService.map) {
-          component = ComponentInjectorService.map.getComponent(targetType);
-        }
-      }
-
+    this.resolver.resolve(this.context).then(component => {
       if (!!component) {
         this.current = this.injector.injectInto(component, this.host);
         this.current.instance.context = this.context;
       }
-    }
+    });
+
   }
 
   private destroyContext() {

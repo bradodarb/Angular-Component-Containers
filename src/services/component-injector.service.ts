@@ -5,7 +5,8 @@ import {
   ComponentFactoryResolver, ComponentRef, ComponentFactory
 } from '@angular/core';
 
-import { ComponentMap } from '../models/component-map';
+import { ComponentMap } from '../lib/component-map';
+
 @Injectable()
 export class ComponentInjectorService {
   public factories = new Map();
