@@ -12,7 +12,7 @@ const rootFolder = path.join(__dirname);
 const srcFolder = path.join(rootFolder, 'src');
 const tmpFolder = path.join(rootFolder, '.tmp');
 const buildFolder = path.join(rootFolder, 'build');
-const rollupSource = path.join(buildFolder, 'component-container.module.js');
+const rollupSource = path.join(buildFolder, 'index.js');
 const distFolder = path.join(rootFolder, 'dist');
 
 /**
