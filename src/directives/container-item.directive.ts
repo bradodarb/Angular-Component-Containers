@@ -12,7 +12,7 @@ export class ContainerItemDirective implements OnChanges {
 
   @Input() map: ComponentMap = new ComponentMap();
 
-  @Input() resolver: Resolver = new BaseResolver(this.map);
+  @Input() resolver: Resolver;
 
   private injector: ComponentInjectorService;
   private host: ViewContainerRef;
@@ -21,7 +21,9 @@ export class ContainerItemDirective implements OnChanges {
   constructor(injector: ComponentInjectorService, host: ViewContainerRef) {
     this.injector = injector;
     this.host = host;
-
+    if (!this.resolver) {
+      this.resolver = new BaseResolver(this.map);
+    }
   }
 
 
@@ -45,10 +47,21 @@ export class ContainerItemDirective implements OnChanges {
   }
 
   ngOnChanges(changes) {
-    if (changes && (changes.context && changes.context.previousValue !== changes.context.currentValue) ||
-      (changes.map && changes.map.previousValue !== changes.map.currentValue)) {
+    const dirtyContext = changes.context && changes.context.previousValue !== changes.context.currentValue;
+    const dirtyMap = changes.map && changes.map.previousValue !== changes.map.currentValue;
+
+    if (dirtyMap) {
+      this.resolver.map = this.map;
+    }
+
+    if (dirtyContext || dirtyMap) {
       this.resolveContext();
     }
   }
 
+  ngOnInit() {
+    if (!this.resolver) {
+      this.resolver = new BaseResolver(this.map);
+    }
+  }
 }
