@@ -49,9 +49,9 @@ export class ContainerListDirective {
     this.collectionMap = new Map<any, ComponentRef<any>>();
   }
 
-  private resolveContext(context, index?: number): void {
+  private resolveContext(context, index?: number) {
 
-    this.resolver.resolve(context).then(component => {
+    return this.resolver.resolve(context).then(component => {
       if (!!component) {
         const current = this.injector.injectInto(component, this.host, index);
         current.instance.context = context;
@@ -61,22 +61,28 @@ export class ContainerListDirective {
 
   }
 
-  private resolveCollection(): void {
+  private resolveCollection() {
+    const _self = this;
     if (this.collection) {
-      this.destroyCollection();
-      this.collection.forEach((component, index) => {
-        this.resolveContext(component);
+      this.destroyCollection().then(() => {
+        const toResolve = [];
+        this.collection.forEach((component, index) => {
+          toResolve.push(_self.resolveContext(component, index));
+        });
+        return Promise.all(toResolve);
       });
     }
   }
 
-  private destroyCollection(): void {
-    if (this.collectionMap) {
-      this.collectionMap.forEach(element => {
-        element.destroy();
-      });
-      this.collectionMap.clear();
-    }
+  private destroyCollection() {
+    return new Promise((resolve, reject) => {
+      if (this.collectionMap) {
+        this.collectionMap.forEach(element => {
+          element.destroy();
+        });
+        this.collectionMap.clear();
+      }
+    });
   }
 
   ngOnChanges(changes): void {
