@@ -28,7 +28,7 @@ export class ContainerItemDirective implements OnChanges {
 
 
 
-  private resolveContext() {
+  private resolveContext(): void {
     this.destroyContext();
 
     this.resolver.resolve(this.context).then(component => {
@@ -40,26 +40,27 @@ export class ContainerItemDirective implements OnChanges {
 
   }
 
-  private destroyContext() {
+  private destroyContext(): void {
     if (this.current) {
       this.current.destroy();
     }
   }
 
-  ngOnChanges(changes) {
+  ngOnChanges(changes): void {
     const dirtyContext = changes.context && changes.context.previousValue !== changes.context.currentValue;
     const dirtyMap = changes.map && changes.map.previousValue !== changes.map.currentValue;
+    const dirtyResolver = changes.resolver && changes.resolver.previousValue !== changes.resolver.currentValue;
 
     if (dirtyMap) {
       this.resolver.map = this.map;
     }
 
-    if (dirtyContext || dirtyMap) {
+    if (dirtyContext || dirtyMap || dirtyResolver) {
       this.resolveContext();
     }
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     if (!this.resolver) {
       this.resolver = new BaseResolver(this.map);
     }

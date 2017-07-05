@@ -15,14 +15,14 @@ export class ComponentInjectorService {
     this.componentFactoryResolver = componentFactoryResolver;
   }
 
-  injectInto(component, target: ViewContainerRef): ComponentRef<any> {
+  injectInto(component, target: ViewContainerRef, index: number = 0): ComponentRef<any> {
     let factory = this.factories.get(component);
     if (!factory) {
       factory = this.componentFactoryResolver.resolveComponentFactory(component);
       this.factories.set(component, factory);
     }
 
-    const result = target.createComponent(factory);
+    const result = target.createComponent(factory, index);
     return result;
 
   }
