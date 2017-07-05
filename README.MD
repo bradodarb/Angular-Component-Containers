@@ -2,6 +2,12 @@
 
 This is a template for building your own reusable Angular2/Ionic2 module using TypeScript. Supports Angular's ngc and Ahead-of-Time compiling out of the box.
 
+## Installation
+
+```bash
+npm i -S component-containers
+```
+
 ## Using Component Containers
 
 ### Import ComponentContainerModule and register injectable components
@@ -66,7 +72,7 @@ export class AppUserComponent {
     this.map =
       new ComponentMap([{
         model: AdminUser,
-        component: AdminUserComponent
+        component: AdminUserComponent //A promise can also be used here to resolve dynamic/lazy-loaded components
       }, {
         model: MemberUser,
         component: MemberUserComponent
