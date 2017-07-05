@@ -1,18 +1,18 @@
 
-import { Component, Directive, Input, ViewContainerRef, OnChanges, ComponentRef, OnInit } from '@angular/core';
+import { Component, Directive, Input, ViewContainerRef, OnChanges, ComponentRef } from '@angular/core';
 import { ComponentInjectorService } from '../services/component-injector.service';
 import { ComponentMap } from '../lib/component-map';
 import { BaseResolver, Resolver } from '../lib/resolver-strategy';
 
 @Directive({ selector: '[container-item]' })
-export class ContainerItemDirective implements OnChanges, OnInit {
+export class ContainerItemDirective implements OnChanges {
 
 
   @Input() context: Component;
 
   @Input() map: ComponentMap = new ComponentMap();
 
-  @Input() resolver: Resolver
+  @Input() resolver: Resolver = new BaseResolver(this.map);
 
   private injector: ComponentInjectorService;
   private host: ViewContainerRef;
@@ -21,13 +21,10 @@ export class ContainerItemDirective implements OnChanges, OnInit {
   constructor(injector: ComponentInjectorService, host: ViewContainerRef) {
     this.injector = injector;
     this.host = host;
+
   }
 
-  ngOnInit() {
-    if (!this.resolver) {
-      this.resolver = new BaseResolver(this.map);
-    }
-  }
+
 
   private resolveContext() {
     this.destroyContext();
