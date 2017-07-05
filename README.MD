@@ -1,6 +1,15 @@
 # Component Containers
 
-This is a template for building your own reusable Angular2/Ionic2 module using TypeScript. Supports Angular's ngc and Ahead-of-Time compiling out of the box.
+An ng2+ library for declaritively injecting components into your views.
+
+Declare a map that relates your classes to their appropriate components
+
+
+For example, say you have a component that displays a list of users and you want to 
+load a specific component for either displaying or editing user information based on the type of user.
+
+Rather than having a single component that hides/shows fields based on user model properties you can inject
+ the right component for the right type of user based on a map.
 
 ## Installation
 
@@ -104,6 +113,10 @@ class NewUser {
 
 ```
 
+
+##Context
+
+The component that is injected recieves a property [context] which is the model that triggered the mapping (this.current in the preivous example)
 
 
 
