@@ -25,6 +25,6 @@
     "flatModuleId": "component-containers"
   },
   "files": [
-    "./index.ts"
+    "./component-container.module.ts"
   ]
 }

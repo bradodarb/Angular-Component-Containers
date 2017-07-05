@@ -12,6 +12,7 @@ const rootFolder = path.join(__dirname);
 const srcFolder = path.join(rootFolder, 'src');
 const tmpFolder = path.join(rootFolder, '.tmp');
 const buildFolder = path.join(rootFolder, 'build');
+const rollupSource = path.join(buildFolder, 'component-container.module.js');
 const distFolder = path.join(rootFolder, 'dist');
 
 /**
@@ -50,8 +51,8 @@ gulp.task('inline-resources', function () {
  */
 gulp.task('ngc', function () {
   return ngc({
-    project: `${tmpFolder}/tsconfig.es5.json`
-  })
+      project: `${tmpFolder}/tsconfig.es5.json`
+    })
     .then((exitCode) => {
       if (exitCode === 1) {
         // This error is caught in the 'compile' task by the runSequence method callback
@@ -67,12 +68,12 @@ gulp.task('ngc', function () {
  */
 gulp.task('rollup:fesm', function () {
   return gulp.src(`${buildFolder}/**/*.js`)
-  // transform the files here.
+    // transform the files here.
     .pipe(rollup({
 
       // Bundle's entry point
       // See https://github.com/rollup/rollup/wiki/JavaScript-API#entry
-      entry: `${buildFolder}/index.js`,
+      entry: rollupSource,
 
       // Allow mixing of hypothetical and actual files. "Actual" files can be files
       // accessed by Rollup or produced by plugins further down the chain.
@@ -100,12 +101,12 @@ gulp.task('rollup:fesm', function () {
  */
 gulp.task('rollup:umd', function () {
   return gulp.src(`${buildFolder}/**/*.js`)
-  // transform the files here.
+    // transform the files here.
     .pipe(rollup({
 
       // Bundle's entry point
       // See https://github.com/rollup/rollup/wiki/JavaScript-API#entry
-      entry: `${buildFolder}/index.js`,
+      entry: rollupSource,
 
       // Allow mixing of hypothetical and actual files. "Actual" files can be files
       // accessed by Rollup or produced by plugins further down the chain.
