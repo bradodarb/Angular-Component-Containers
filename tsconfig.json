@@ -1,14 +1,24 @@
 {
   "compilerOptions": {
-    "baseUrl": "./src",
-    "experimentalDecorators": true,
+    "module": "es2015",
+    "target": "es5",
     "moduleResolution": "node",
-    "rootDir": "./src",
-    "lib": [
-      "es2015",
-      "dom"
-    ],
-    "skipLibCheck": true,
-    "types": []
+    "sourceMap": true,
+    "declaration": true,
+    "noImplicitAny": false,
+    "experimentalDecorators": true,
+    "lib": ["dom", "es2015"],
+    "outDir": "./dist",
+    "types": [
+      "node"
+    ]
+  },
+  "exclude": [
+    "node_modules",
+    "dist",
+    "scripts"
+  ],
+  "angularCompilerOptions": {
+    "genDir": "aot"
   }
 }

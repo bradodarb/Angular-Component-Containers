@@ -1,72 +1,46 @@
-# component-containers
+# Ionic Module Template
 
-## Installation
+This is a template for building your own reusable Angular2/Ionic2 module using TypeScript. Supports Angular's ngc and Ahead-of-Time compiling out of the box.
 
-To install this library, run:
+## Developing
 
-```bash
-$ npm install component-containers --save
-```
+Develop your module like any other Angular 2 module. Then, run `npm run build` to build a local copy.
 
-## Consuming your library
+When you're ready to publish to npm, run `npm publishPackage`.
 
-Once you have published your library to npm, you can import your library in any Angular application by running:
+If you'd like to test this package, run `npm install ionic-module-template`
 
-```bash
-$ npm install component-containers
-```
+## npm link
 
-and then from your Angular `AppModule`:
+Currently, modules must be published to npm. `npm link` packages will not install properly with our webpack confing (something on our list). If you can't push private code to npm, other options are a private npm repo/npm enterprise, or `npm install` from a git repo.
+
+## Using your module in an Ionic 2 app
 
 ```typescript
-import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { IonicApp, IonicModule } from 'ionic-angular';
+import { MyApp } from './app.component';
+import { HomePage } from '../pages/home/home';
 
-import { AppComponent } from './app.component';
-
-// Import your library
-import { SampleModule } from 'component-containers';
+// Import your module
+import { MyModule } from 'ionic-module-template';
 
 @NgModule({
   declarations: [
-    AppComponent
+    MyApp,
+    HomePage
   ],
   imports: [
-    BrowserModule,
+    IonicModule.forRoot(MyApp),
 
-    // Specify your library as an import
-    LibraryModule
+    MyModule // Put your module here
   ],
-  providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [IonicApp],
+  entryComponents: [
+    MyApp,
+    HomePage
+  ],
+  providers: []
 })
-export class AppModule { }
+export class AppModule {}
 ```
-
-Once your library is imported, you can use its components, directives and pipes in your Angular application:
-
-```xml
-<!-- You can now use your library component in app.component.html -->
-<h1>
-  {{title}}
-</h1>
-<sampleComponent></sampleComponent>
-```
-
-## Development
-
-To generate all `*.js`, `*.d.ts` and `*.metadata.json` files:
-
-```bash
-$ npm run build
-```
-
-To lint all `*.ts` files:
-
-```bash
-$ npm run lint
-```
-
-## License
-
-MIT © [bradodarb](mailto:bradodarb@hotmail.com)
