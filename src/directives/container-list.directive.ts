@@ -65,7 +65,7 @@ export class ContainerListDirective {
     if (this.collection) {
       this.destroyCollection();
       this.collection.forEach((component, index) => {
-        this.resolveContext(component, index);
+        this.resolveContext(component);
       });
     }
   }
@@ -101,24 +101,31 @@ export class ContainerListDirective {
   }
 
   ngDoCheck(): void {
-
     if (this.differ) {
       const changes = this.differ.diff(this.collection);
-      if (changes) {
-        changes.forEachAddedItem((change) => {
-          if (!this.collectionMap.has(change.item)) {
-            this.resolveContext(change.item, change.index);
-          }
-        });
-        changes.forEachRemovedItem((change) => {
-          const toRemove = this.collectionMap.get(change.item);
-          if (toRemove) {
-            this.collectionMap.delete(change.item);
-            toRemove.destroy();
-          }
-        });
+      if (changes && changes.isDirty) {
+        this.resolveCollection();
       }
+
     }
+    //TODO: Track and update changes rather than just recreating every time...    
+    // if (this.differ) {
+    //   const changes = this.differ.diff(this.collection);
+    //   if (changes) {
+    //     changes.forEachAddedItem((change) => {
+    //       if (!this.collectionMap.has(change.item)) {
+    //         this.resolveContext(change.item);
+    //       }
+    //     });
+    //     changes.forEachRemovedItem((change) => {
+    //       const toRemove = this.collectionMap.get(change.item);
+    //       if (toRemove) {
+    //         this.collectionMap.delete(change.item);
+    //         toRemove.destroy();
+    //       }
+    //     });
+    //   }
+    // }
   }
 
   ngOnInit(): void {
