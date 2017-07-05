@@ -1,6 +1,6 @@
 {
   "name": "component-containers",
-  "version": "0.1.10",
+  "version": "0.1.11",
   "description": "Declartive approach to composing components",
   "main": "./dist/index.js",
   "typings": "./dist/index.d.ts",
@@ -17,7 +17,16 @@
     "name": "bradodarb",
     "email": "bradodarb@hotmail.com"
   },
-  "keywords": [],
+  "keywords": [
+    "angular",
+    "angular2",
+    "angular4",
+    "injection",
+    "DI",
+    "MVVM",
+    "component injection",
+    "dynamic components"
+  ],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/bradodarb/Angular-Component-Conatainers/issues"
