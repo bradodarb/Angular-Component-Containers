@@ -57,6 +57,7 @@ export class ContainerListDirective {
         current.instance.context = context;
         this.collectionMap.set(context, current);
       }
+      Promise.resolve(this.collectionMap.size);
     });
 
   }
@@ -76,12 +77,14 @@ export class ContainerListDirective {
 
   private destroyCollection() {
     return new Promise((resolve, reject) => {
+      const size = this.collectionMap.size;
       if (this.collectionMap) {
         this.collectionMap.forEach(element => {
           element.destroy();
         });
         this.collectionMap.clear();
       }
+      resolve(size);
     });
   }
 
