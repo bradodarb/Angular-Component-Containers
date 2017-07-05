@@ -114,7 +114,7 @@ class NewUser {
 ```
 
 
-##Context
+## Context
 
 The component that is injected recieves a property [context] which is the model that triggered the mapping (this.current in the preivous example)
 
