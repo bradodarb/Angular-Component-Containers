@@ -2,6 +2,7 @@ import { NgModule, ModuleWithProviders, CUSTOM_ELEMENTS_SCHEMA } from '@angular/
 import { CommonModule } from '@angular/common';
 import { ComponentInjectorService } from './services/component-injector.service';
 import { ContainerItemDirective } from './directives/container-item.directive';
+import { ContainerListDirective } from './directives/container-list.directive';
 import { ComponentMap, ComponentMapItem } from './lib/component-map';
 
 export { ComponentMap };
@@ -11,9 +12,12 @@ export { ComponentMapItem };
   imports: [
     CommonModule
   ],
-  declarations: [ContainerItemDirective],
+  declarations: [
+    ContainerItemDirective,
+    ContainerListDirective],
   exports: [
-    ContainerItemDirective
+    ContainerItemDirective,
+    ContainerListDirective
   ],
   providers: [ComponentInjectorService],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]

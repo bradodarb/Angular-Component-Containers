@@ -106,7 +106,9 @@ export class ContainerListDirective {
       const changes = this.differ.diff(this.collection);
       if (changes) {
         changes.forEachAddedItem((change) => {
-          this.resolveContext(change.item, change.index);
+          if (!this.collectionMap.has(change.item)) {
+            this.resolveContext(change.item, change.index);
+          }
         });
         changes.forEachRemovedItem((change) => {
           const toRemove = this.collectionMap.get(change.item);
