@@ -49,7 +49,7 @@ export class ContainerListDirective {
     this.collectionMap = new Map<any, ComponentRef<any>>();
   }
 
-  private resolveContext(context, index: number = 0): void {
+  private resolveContext(context, index?: number): void {
 
     this.resolver.resolve(context).then(component => {
       if (!!component) {
