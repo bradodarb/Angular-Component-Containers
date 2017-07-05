@@ -12,7 +12,9 @@ import { MyApp } from './app.component';
 // Import Component Containers
 import { ComponentContainerModule } from 'component-containers';
 
-// Import any static components that you'll want to inject and add them to this module's entryComponents[] (dynamic components register themselves)
+// Import any static components that you'll want to inject 
+// and add them to this module's entryComponents[] 
+// (dynamic components register themselves)
 
 import { AdminUserComponent } from './components/admin-user.component';
 import { MemberUserComponent } from './components/member-user.component';
