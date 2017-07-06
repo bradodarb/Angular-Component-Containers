@@ -53,9 +53,11 @@ export class ContainerListDirective {
 
     return this.resolver.resolve(context).then(component => {
       if (!!component) {
-        const current = this.injector.injectInto(component, this.host, index);
-        current.instance.context = context;
-        this.collectionMap.set(context, current);
+        if (!this.collectionMap.has(context)) {
+          const current = this.injector.injectInto(component, this.host, index);
+          current.instance.context = context;
+          this.collectionMap.set(context, current);
+        }
       }
       Promise.resolve(this.collectionMap.size);
     });
