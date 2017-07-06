@@ -29,15 +29,18 @@ export class ContainerItemDirective implements OnChanges {
 
 
   private resolveContext(): void {
-    this.destroyContext();
+    if (!!this.context) {
 
-    this.resolver.resolve(this.context).then(component => {
-      if (!!component) {
-        this.current = this.injector.injectInto(component, this.host);
-        this.current.instance.context = this.context;
-      }
-    });
+      this.destroyContext();
 
+      this.resolver.resolve(this.context).then(component => {
+        if (!!component) {
+          this.current = this.injector.injectInto(component, this.host);
+          this.current.instance.context = this.context;
+        }
+      });
+
+    }
   }
 
   private destroyContext(): void {
