@@ -10,6 +10,7 @@ import {
   ComponentRef
 } from '@angular/core';
 import { ComponentInjectorService } from '../services/component-injector.service';
+import { ComponentMapService } from '../services/component-map.service';
 import { ComponentMap } from '../lib/component-map';
 import { BaseResolver, Resolver } from '../lib/resolver-strategy';
 
@@ -21,11 +22,15 @@ export class ContainerListDirective {
 
   @Input() map: ComponentMap = new ComponentMap();
 
+  @Input() mapKey: any;
+
   @Input() resolver: Resolver;
 
   private injector: ComponentInjectorService;
 
   private host: ViewContainerRef;
+
+  private maps: ComponentMapService;
 
 
   private collectionMap: Map<any, ComponentRef<any>>;
@@ -33,12 +38,15 @@ export class ContainerListDirective {
   private differs: IterableDiffers;
   private differ: IterableDiffer;
 
-  constructor(injector: ComponentInjectorService,
+  constructor(
+    injector: ComponentInjectorService,
+    maps: ComponentMapService,
     host: ViewContainerRef,
     changeDetector: ChangeDetectorRef,
     differs: IterableDiffers) {
-    this.differs = differs;
 
+    this.differs = differs;
+    this.maps = maps;
     this.injector = injector;
     this.host = host;
 
@@ -93,7 +101,14 @@ export class ContainerListDirective {
   ngOnChanges(changes): void {
     const dirtyCollection = changes.collection && changes.collection.previousValue !== changes.collection.currentValue;
     const dirtyMap = changes.map && changes.map.previousValue !== changes.map.currentValue;
+    const dirtyMapKey = changes.mapKey && changes.mapKey.previousValue !== changes.mapKey.currentValue;
     const dirtyResolver = changes.resolver && changes.resolver.previousValue !== changes.resolver.currentValue;
+
+
+    if (!!this.maps && dirtyMapKey) {
+      const map = this.maps.get(this.mapKey);
+      this.resolver.map = map;
+    }
 
     if (dirtyMap) {
       this.resolver.map = this.map;
@@ -105,7 +120,7 @@ export class ContainerListDirective {
       }
     }
 
-    if (dirtyCollection || dirtyMap || dirtyResolver) {
+    if (dirtyCollection || dirtyMap || dirtyMapKey || dirtyResolver) {
       this.resolveCollection();
     }
 

@@ -1,6 +1,7 @@
 
 import { Component, Directive, Input, ViewContainerRef, OnChanges, ComponentRef } from '@angular/core';
 import { ComponentInjectorService } from '../services/component-injector.service';
+import { ComponentMapService } from '../services/component-map.service';
 import { ComponentMap } from '../lib/component-map';
 import { BaseResolver, Resolver } from '../lib/resolver-strategy';
 
@@ -12,20 +13,28 @@ export class ContainerItemDirective implements OnChanges {
 
   @Input() map: ComponentMap = new ComponentMap();
 
+  @Input() mapKey: any;
+
   @Input() resolver: Resolver;
 
   private injector: ComponentInjectorService;
   private host: ViewContainerRef;
   private current: ComponentRef<any>;
+  private maps: ComponentMapService;
 
-  constructor(injector: ComponentInjectorService, host: ViewContainerRef) {
+
+  constructor(
+    injector: ComponentInjectorService,
+    maps: ComponentMapService,
+    host: ViewContainerRef) {
+
     this.injector = injector;
+    this.maps = maps;
     this.host = host;
     if (!this.resolver) {
       this.resolver = new BaseResolver(this.map);
     }
   }
-
 
 
   private resolveContext(): void {
@@ -52,13 +61,19 @@ export class ContainerItemDirective implements OnChanges {
   ngOnChanges(changes): void {
     const dirtyContext = changes.context && changes.context.previousValue !== changes.context.currentValue;
     const dirtyMap = changes.map && changes.map.previousValue !== changes.map.currentValue;
+    const dirtyMapKey = changes.mapKey && changes.mapKey.previousValue !== changes.mapKey.currentValue;
     const dirtyResolver = changes.resolver && changes.resolver.previousValue !== changes.resolver.currentValue;
+
+    if (!!this.maps && dirtyMapKey) {
+      const map = this.maps.get(this.mapKey);
+      this.resolver.map = map;
+    }
 
     if (dirtyMap) {
       this.resolver.map = this.map;
     }
 
-    if (dirtyContext || dirtyMap || dirtyResolver) {
+    if (dirtyContext || dirtyMap || dirtyMapKey || dirtyResolver) {
       this.resolveContext();
     }
   }
