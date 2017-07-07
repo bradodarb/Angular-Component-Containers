@@ -11,6 +11,10 @@ load a specific component for either displaying or editing user information base
 Rather than having a single component that hides/shows fields based on user model properties you can inject
  the right component for the right type of user based on a map.
 
+## Demo
+
+[Demo Site](https://bradodarb.github.io/Angular-Component-Containers-Demo/component)
+
 ## Installation
 
 ```bash
